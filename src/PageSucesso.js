@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function PageSucesso(){
     return(
@@ -25,7 +26,9 @@ export default function PageSucesso(){
                 <span>Nome: Brenda Rayane de Souza e Silva</span><br/>
                 <span>CPF: 111.111.111-11</span>
             </EscolhasFeitas>
-            <BotaoBackHome>Voltar pra Home</BotaoBackHome>
+            <Link to="/">
+                <BotaoBackHome>Voltar pra Home</BotaoBackHome>
+            </Link>
         </ContainerSucesso>
         </>
     )

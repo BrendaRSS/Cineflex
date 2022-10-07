@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function PageEscolhaDaSessao(){
     const[sessoes, setSessoes]=useState(undefined)
@@ -28,7 +29,7 @@ export default function PageEscolhaDaSessao(){
             {sessoes.days.map((d, index)=>
                 <Sessoes key={index}>
                     <p>{d.weekday} - {d.date}</p>
-                    {d.showtimes.map((h,index)=><button key={index}>{h.name}</button>)}
+                    {d.showtimes.map((h,index)=><Link to="/assentos/:idSessao"><button key={index}>{h.name}</button></Link>)}
                 </Sessoes>
             )}
             <FooterEscolhaSessao>

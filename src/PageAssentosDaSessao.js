@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function PageAssentosDaSessao(){
     const[assentos, setAssentos]=useState(undefined)
@@ -55,7 +56,9 @@ export default function PageAssentosDaSessao(){
                     <input placeholder="Digite seu CPF"/>
                 </CPFcomprador>
             </DadosDoComprador>
-            <BotaoReservarAssento>Reservar assento(s)</BotaoReservarAssento>
+            <Link to="/sucesso">
+                <BotaoReservarAssento>Reservar assento(s)</BotaoReservarAssento>
+            </Link>
             <FooterEscolhaAssento>
                 <FooterMovieSelecionado>
                     <img alt="Capa do filme" src="https://image.tmdb.org/t/p/w500/TnOeov4w0sTtV2gqICqIxVi74V.jpg"/>

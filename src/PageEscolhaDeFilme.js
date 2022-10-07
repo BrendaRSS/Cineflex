@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import axios from 'axios'
 import { useEffect, useState } from "react"
+import { Link } from "react-router-dom";
 
 export default function PageEscolhaDeFilme(){
     const[filmes, setFilmes]=useState(undefined);
@@ -29,9 +30,11 @@ export default function PageEscolhaDeFilme(){
             </SubtitleEscolhaFilme>
             <MovieScreen>
                {filmes.map((f, index)=> 
-                <Movie key={index}>
-                    <img alt="capa do filme" src={f.posterURL}/>
-                </Movie>)}   
+               <Link to="/sessoes/:idFilme">
+                    <Movie key={index}>
+                        <img alt="capa do filme" src={f.posterURL}/>
+                    </Movie>
+                </Link>)}   
             </MovieScreen>
         </ContainerEscolhaFilme>
 
