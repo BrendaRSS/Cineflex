@@ -30,8 +30,8 @@ export default function PageEscolhaDeFilme(){
             </SubtitleEscolhaFilme>
             <MovieScreen>
                {filmes.map((f, index)=> 
-               <Link to="/sessoes/:idFilme">
-                    <Movie key={index}>
+               <Link key={index} to={`/sessoes/${f.id}`}>
+                    <Movie>
                         <img alt="capa do filme" src={f.posterURL}/>
                     </Movie>
                 </Link>)}   

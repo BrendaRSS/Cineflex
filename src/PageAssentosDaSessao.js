@@ -1,24 +1,35 @@
 import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 export default function PageAssentosDaSessao(){
-    const[assentos, setAssentos]=useState(undefined)
+    const[sessao, setSessao]=useState(undefined)
+    const[cadeirasEscolhidas, setCadeirasEscolhidas]=useState([])
+    const {idSessao} = useParams()
+    console.log(cadeirasEscolhidas)
 
     useEffect(()=>{
-        const promisse=axios.get("https://mock-api.driven.com.br/api/v5/cineflex/showtimes/5/seats")
+        const promisse=axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${idSessao}/seats`)
         promisse.then((resposta)=>{
-            setAssentos(resposta.data)
+            setSessao(resposta.data)
         })
         
         promisse.catch((erro)=>{
             console.log(erro.response.data)
         })
-    },[])
+    },[idSessao])
 
-    if(assentos===undefined){
+    if(sessao===undefined){
         return <div>Carregando...</div>
+    }
+    
+    function reservarAssento(idAcentoEscolhido){
+        console.log(idAcentoEscolhido)
+        if(idAcentoEscolhido.isAvailable===true){
+            let newArray=[...cadeirasEscolhidas, idAcentoEscolhido.id]
+            setCadeirasEscolhidas(newArray)
+        }
     }
 
     return(
@@ -27,9 +38,14 @@ export default function PageAssentosDaSessao(){
                 Selecione o(s) assento(s)
             </SubtitleAssentosSessao>
             <Assentos>
-                {assentos.seats.map((a, index)=>
-                    <BotaoAssento key={index} isAvailable={a.isAvailable}>
-                        {a.name}
+                {sessao.seats.map((a, index)=>
+                    <BotaoAssento 
+                        key={index} 
+                        isAvailable={a.isAvailable}
+                        corAssento={(cadeirasEscolhidas.includes(a.id)===true? "#1AAE9E":"#C3CFD9")}
+                        bordaAssento={(cadeirasEscolhidas.includes(a.id)===true? "#0E7D71":"#7B8B99")}
+                        onClick={()=>reservarAssento(a)}>
+                            {a.name}
                     </BotaoAssento>)}
             </Assentos>
             <EstadoDoAssento>
@@ -61,8 +77,8 @@ export default function PageAssentosDaSessao(){
             </Link>
             <FooterEscolhaAssento>
                 <FooterMovieSelecionado>
-                    <img alt="Capa do filme" src="https://image.tmdb.org/t/p/w500/TnOeov4w0sTtV2gqICqIxVi74V.jpg"/>
-                </FooterMovieSelecionado><p>Enola Holmes<b>Quinta-feira 15:00</b></p>
+                    <img alt="Capa do filme" src={sessao.movie.posterURL}/>
+                </FooterMovieSelecionado><p>{sessao.movie.title}<br/>{sessao.day.weekday} - {sessao.name}</p>
             </FooterEscolhaAssento>
         </ContainerAssentosSessao>
     )
@@ -103,8 +119,8 @@ const BotaoAssento=styled.button`
     padding:3px;
     width: 26px;
     height: 26px;
-    background-color: ${(props)=>(props.isAvailable===true? "#C3CFD9":"#FBE192")};
-    border: 1px solid ${(props)=>(props.isAvailable===true? "#7B8B99":"#F7C52B")};
+    background-color: ${(props)=>(props.isAvailable===true? props.corAssento:"#FBE192")};
+    border: 1px solid ${(props)=>(props.isAvailable===true? props.bordaAssento:"#F7C52B")};
     border-radius: 50px;
     margin: 5px 5px;
     font-family: 'Roboto', sans-serif;
@@ -226,7 +242,7 @@ background-color: #DFE6ED;
 display: flex;
 justify-content: start;
 align-items: center;
-text-align: center;
+text-align: start;
 box-shadow: 0px -1px 1px #9EADBA;
     p{
         font-family: 'Roboto', sans-serif;

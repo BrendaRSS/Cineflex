@@ -1,51 +1,53 @@
 import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-export default function PageEscolhaDaSessao(){
-    const[sessoes, setSessoes]=useState(undefined)
+export default function PageEscolhaDaSessao() {
+    const [sessoes, setSessoes] = useState(undefined)
+    const { idFilme } = useParams()
+    console.log(idFilme)
 
-    useEffect(()=>{
-        const promisse=axios.get("https://mock-api.driven.com.br/api/v5/cineflex/movies/5/showtimes")
-        promisse.then((resposta)=>{
+    useEffect(() => {
+        const promisse = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/movies/${idFilme}/showtimes`)
+        promisse.then((resposta) => {
             setSessoes(resposta.data)
         })
-        
-        promisse.catch((erro)=>{
+
+        promisse.catch((erro) => {
             console.log(erro.response.data)
         })
-    },[])
+    }, [idFilme])
 
-    if(sessoes===undefined){
+    if (sessoes === undefined) {
         return <div>Carregando...</div>
     }
 
-    return(
+    return (
         <ContainerEscolhaSessao>
             <SubtitleEscolhaSessao>
                 Selecione o horário
             </SubtitleEscolhaSessao>
-            {sessoes.days.map((d, index)=>
+            {sessoes.days.map((d, index) =>
                 <Sessoes key={index}>
                     <p>{d.weekday} - {d.date}</p>
-                    {d.showtimes.map((h,index)=><Link to="/assentos/:idSessao"><button key={index}>{h.name}</button></Link>)}
+                    {d.showtimes.map((h, index) => <Link key={index} to={`/assentos/${h.id}`}><button>{h.name}</button></Link>)}
                 </Sessoes>
             )}
             <FooterEscolhaSessao>
-                <FooterMovie><img alt="Capa do filme" src="https://image.tmdb.org/t/p/w500/TnOeov4w0sTtV2gqICqIxVi74V.jpg"/></FooterMovie><p>Enola Holmes</p>
+                <FooterMovie><img alt="Capa do filme" src={sessoes.posterURL} /></FooterMovie><p>{sessoes.title}</p>
             </FooterEscolhaSessao>
         </ContainerEscolhaSessao>
     )
 }
 
-const ContainerEscolhaSessao=styled.div`
+const ContainerEscolhaSessao = styled.div`
     width: 374px;
     min-height: 100vh;
     background-color: white;
     margin-top: 67px;
 `
-const SubtitleEscolhaSessao=styled.div`
+const SubtitleEscolhaSessao = styled.div`
     box-sizing: border-box;
     padding: 45px 10px;
     width: 100%;
@@ -57,7 +59,7 @@ const SubtitleEscolhaSessao=styled.div`
     letter-spacing: 4%;
     text-align: center;
 `
-const Sessoes=styled.div`
+const Sessoes = styled.div`
 width: 100%;
 height: auto;
 margin-top: 35px;
@@ -117,7 +119,7 @@ margin-top: 35px;
         }
     }
 `
-const FooterEscolhaSessao=styled.footer`
+const FooterEscolhaSessao = styled.footer`
 width: 375px;
 height: 117px;
 background-color: #DFE6ED;
@@ -134,7 +136,7 @@ box-shadow: 0px -1px 1px #9EADBA;
         line-height: 30.50px;
     }
 `
-const FooterMovie=styled.div`
+const FooterMovie = styled.div`
 background-color: #FFFFFF;
 width: 64px;
 height: 89px;
