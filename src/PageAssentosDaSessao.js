@@ -9,64 +9,64 @@ export default function PageAssentosDaSessao({
     setDataSessao,
     setHoraSessao,
     lugaresEscolhidos,
-    setLugaresEscolhidos, 
-    cpf, 
-    setCpf, 
-    name, 
-    setName}){
+    setLugaresEscolhidos,
+    cpf,
+    setCpf,
+    name,
+    setName }) {
 
-    const[sessao, setSessao]=useState(undefined)
-    const[cadeirasEscolhidas, setCadeirasEscolhidas]=useState([])
-    const[nameAssentos, setNameAssentos]=useState([])
+    const [sessao, setSessao] = useState(undefined)
+    const [cadeirasEscolhidas, setCadeirasEscolhidas] = useState([])
+    const [nameAssentos, setNameAssentos] = useState([])
     const navigate = useNavigate()
-    const {idSessao} = useParams()
+    const { idSessao } = useParams()
     console.log(cadeirasEscolhidas)
     console.log(nameAssentos)
 
-    useEffect(()=>{
-        const promisse=axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${idSessao}/seats`)
-        promisse.then((resposta)=>{
+    useEffect(() => {
+        const promisse = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${idSessao}/seats`)
+        promisse.then((resposta) => {
             setSessao(resposta.data)
         })
-        
-        promisse.catch((erro)=>{
+
+        promisse.catch((erro) => {
             alert(erro.response.data)
         })
-    },[idSessao])
+    }, [idSessao])
 
-    if(sessao===undefined){
+    if (sessao === undefined) {
         return <div>Carregando...</div>
     }
-    
-    function reservarAssento(assentoEscolhido){
+
+    function reservarAssento(assentoEscolhido) {
         console.log(assentoEscolhido)
-        if(cadeirasEscolhidas.includes(assentoEscolhido.id)===false
-            && assentoEscolhido.isAvailable===true){
-            let newArray=[...cadeirasEscolhidas, assentoEscolhido.id]
+        if (cadeirasEscolhidas.includes(assentoEscolhido.id) === false
+            && assentoEscolhido.isAvailable === true) {
+            let newArray = [...cadeirasEscolhidas, assentoEscolhido.id]
             setCadeirasEscolhidas(newArray)
-            let arrayNameAssentos=[...nameAssentos, assentoEscolhido.name]
+            let arrayNameAssentos = [...nameAssentos, assentoEscolhido.name]
             setNameAssentos(arrayNameAssentos)
-        }else if(cadeirasEscolhidas.includes(assentoEscolhido.id)===true
-                    && assentoEscolhido.isAvailable===true){
-            let newArray= cadeirasEscolhidas.filter((i)=> i!==assentoEscolhido.id)
+        } else if (cadeirasEscolhidas.includes(assentoEscolhido.id) === true
+            && assentoEscolhido.isAvailable === true) {
+            let newArray = cadeirasEscolhidas.filter((i) => i !== assentoEscolhido.id)
             setCadeirasEscolhidas(newArray)
-            let arrayNameAssentos=nameAssentos.filter((n)=>n!==assentoEscolhido.name)
+            let arrayNameAssentos = nameAssentos.filter((n) => n !== assentoEscolhido.name)
             setNameAssentos(arrayNameAssentos)
-        } else{
+        } else {
             alert("Esse assento está indisponível")
         }
     }
 
-    function enviarDados(event){
+    function enviarDados(event) {
         event.preventDefault()
-        const body= {
-            ids: cadeirasEscolhidas ,
-            name ,
-            cpf 
+        const body = {
+            ids: cadeirasEscolhidas,
+            name,
+            cpf
         }
 
         const promise = axios.post("https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many", body)
-        promise.then(()=>{
+        promise.then(() => {
             setNameFilm(sessao.movie.title)
             setDataSessao(sessao.day.date)
             setHoraSessao(sessao.name)
@@ -74,75 +74,79 @@ export default function PageAssentosDaSessao({
             navigate("/sucesso")
         })
 
-        promise.catch((erro)=>{
+        promise.catch((erro) => {
             console.log(erro.response.data)
         })
     }
 
-    return(
+    return (
         <ContainerAssentosSessao>
             <SubtitleAssentosSessao>
                 Selecione o(s) assento(s)
             </SubtitleAssentosSessao>
             <Assentos>
-                {sessao.seats.map((a, index)=>
-                    <BotaoAssento 
-                        key={index} 
+                {sessao.seats.map((a, index) =>
+                    <BotaoAssento
+                        key={index}
                         isAvailable={a.isAvailable}
-                        corAssento={(cadeirasEscolhidas.includes(a.id)===true? "#1AAE9E":"#C3CFD9")}
-                        bordaAssento={(cadeirasEscolhidas.includes(a.id)===true? "#0E7D71":"#7B8B99")}
-                        onClick={()=>reservarAssento(a)}>
-                            {a.name}
+                        corAssento={(cadeirasEscolhidas.includes(a.id) === true ? "#1AAE9E" : "#C3CFD9")}
+                        bordaAssento={(cadeirasEscolhidas.includes(a.id) === true ? "#0E7D71" : "#7B8B99")}
+                        onClick={() => reservarAssento(a)}>
+                        {a.name}
                     </BotaoAssento>)}
             </Assentos>
             <EstadoDoAssento>
                 <div>
-                    <CorBotao color="#1AAE9E" borda="#0E7D71"/>
+                    <CorBotao color="#1AAE9E" borda="#0E7D71" />
                     <p>Selecionado</p>
                 </div>
                 <div>
-                    <CorBotao color="#C3CFD9" borda="#7B8B99"/>
+                    <CorBotao color="#C3CFD9" borda="#7B8B99" />
                     <p>Disponível</p>
                 </div>
                 <div>
-                    <CorBotao color="#FBE192" borda="#F7C52B"/>
+                    <CorBotao color="#FBE192" borda="#F7C52B" />
                     <p>Indisponível</p>
                 </div>
             </EstadoDoAssento>
             <form onSubmit={enviarDados}>
-                <DadosDoComprador>
-                    <NomeComprador>
-                        <label>Nome do comprador</label>
-                        <input 
-                            onChange={e=>setName(e.target.value)}
-                            value={name}
-                            placeholder="Digite seu nome" 
-                            required/>
-                    </NomeComprador>
-                    <CPFcomprador>
-                        <label>CPF do comprador</label>
-                        <input 
-                            onChange={e=>setCpf(e.target.value)}
-                            value={cpf}
-                            placeholder="Digite seu CPF" 
-                            required/>
-                    </CPFcomprador>
-                </DadosDoComprador>
-                <BotaoReservarAssento 
-                    type="submit">
+                <ContainerDadosDoComprador>
+                    <DadosDoComprador>
+                        <NomeComprador>
+                            <label>Nome do comprador</label>
+                            <input
+                                onChange={e => setName(e.target.value)}
+                                value={name}
+                                placeholder="Digite seu nome"
+                                required />
+                        </NomeComprador>
+                        <CPFcomprador>
+                            <label>CPF do comprador</label>
+                            <input
+                                onChange={e => setCpf(e.target.value)}
+                                value={cpf}
+                                placeholder="Digite seu CPF"
+                                required />
+                        </CPFcomprador>
+                    </DadosDoComprador>
+                </ContainerDadosDoComprador>
+                <DisplayFlex>
+                    <BotaoReservarAssento
+                        type="submit">
                         Reservar assento(s)
-                </BotaoReservarAssento>
+                    </BotaoReservarAssento>
+                </DisplayFlex>
             </form>
             <FooterEscolhaAssento>
                 <FooterMovieSelecionado>
-                    <img alt="Capa do filme" src={sessao.movie.posterURL}/>
-                </FooterMovieSelecionado><p>{sessao.movie.title}<br/>{sessao.day.weekday} - {sessao.name}</p>
+                    <img alt="Capa do filme" src={sessao.movie.posterURL} />
+                </FooterMovieSelecionado><p>{sessao.movie.title}<br />{sessao.day.weekday} - {sessao.name}</p>
             </FooterEscolhaAssento>
         </ContainerAssentosSessao>
     )
 }
 
-const ContainerAssentosSessao=styled.div`
+const ContainerAssentosSessao = styled.div`
     width: 374px;
     min-height: 100vh;
     background-color: white;
@@ -151,7 +155,7 @@ const ContainerAssentosSessao=styled.div`
     flex-direction: column;
     align-items: center;
 `
-const SubtitleAssentosSessao=styled.div`
+const SubtitleAssentosSessao = styled.div`
     box-sizing: border-box;
     padding: 45px 10px;
     width: 100%;
@@ -163,7 +167,7 @@ const SubtitleAssentosSessao=styled.div`
     letter-spacing: 4%;
     text-align: center;
 `
-const Assentos=styled.div`
+const Assentos = styled.div`
     box-sizing: border-box;
     padding: 5px;
     width: 100%;
@@ -172,13 +176,13 @@ const Assentos=styled.div`
     justify-content: space-between;
     flex-wrap: wrap;
 `
-const BotaoAssento=styled.button`
+const BotaoAssento = styled.button`
     box-sizing: border-box;
     padding:3px;
     width: 26px;
     height: 26px;
-    background-color: ${(props)=>(props.isAvailable===true? props.corAssento:"#FBE192")};
-    border: 1px solid ${(props)=>(props.isAvailable===true? props.bordaAssento:"#F7C52B")};
+    background-color: ${(props) => (props.isAvailable === true ? props.corAssento : "#FBE192")};
+    border: 1px solid ${(props) => (props.isAvailable === true ? props.bordaAssento : "#F7C52B")};
     border-radius: 50px;
     margin: 5px 5px;
     font-family: 'Roboto', sans-serif;
@@ -188,7 +192,7 @@ const BotaoAssento=styled.button`
     letter-spacing: 4%;
     color: #000000;
 `
-const EstadoDoAssento=styled.div`
+const EstadoDoAssento = styled.div`
     box-sizing: border-box;
     padding: 20px 50px;
     width: 100%;
@@ -209,22 +213,29 @@ const EstadoDoAssento=styled.div`
             color: #4E5A65;
         }
 `
-const CorBotao=styled.button`
+const CorBotao = styled.button`
     width: 24px;
     height: 24px;
-    background-color: ${(props)=>props.color};
-    border: 1px solid ${(props)=>props.borda};
+    background-color: ${(props) => props.color};
+    border: 1px solid ${(props) => props.borda};
     border-radius: 50px;
     margin-bottom:5px;
 `
-const DadosDoComprador=styled.div`
+const ContainerDadosDoComprador = styled.div`
+    width: 100%;
+    height: auto;
+    box-sizing: border-box;
+    padding: 0px 30px;
+    
+`
+const DadosDoComprador = styled.div`
     width: 100%;
     height: 200px;
     margin-bottom: 57px;
     display: flex;
     flex-direction: column;
 `
-const NomeComprador=styled.div`
+const NomeComprador = styled.div`
     width: 100%;
     height: 75px;
     display: flex;
@@ -232,27 +243,69 @@ const NomeComprador=styled.div`
     margin-top: 30px;
     margin-bottom:25px;
         label{
-
+            font-family: 'Roboto', sans-serif;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 18px;
+            line-height: 21px;
+            display: flex;
+            align-items: center;
+            color: #293845;
         }
         input{
             width: 350px;
             height: 51px;
+
+            ::placeholder{
+                font-family: 'Roboto', sans-serif;
+                font-style: italic;
+                font-weight: 400;
+                font-size: 18px;
+                line-height: 21px;
+                display: flex;
+                align-items: center;
+                color: #AFAFAF;
+            }
         }
 `
-const CPFcomprador=styled.div`
+const CPFcomprador = styled.div`
     width: 100%;
     height: 75px;
     display: flex;
     flex-direction: column;
     label{
-        
-    }
+            font-family: 'Roboto', sans-serif;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 18px;
+            line-height: 21px;
+            display: flex;
+            align-items: center;
+            color: #293845;
+        }
     input{
         width: 350px;
         height: 51px;
+        ::placeholder{
+                font-family: 'Roboto', sans-serif;
+                font-style: italic;
+                font-weight: 400;
+                font-size: 18px;
+                line-height: 21px;
+                display: flex;
+                align-items: center;
+                color: #AFAFAF;
+            }
     }
 `
-const BotaoReservarAssento=styled.button`
+const DisplayFlex = styled.div`
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
+const BotaoReservarAssento = styled.button`
   cursor: pointer;
   align-items: center;
   background-clip: padding-box;
@@ -292,7 +345,7 @@ const BotaoReservarAssento=styled.button`
   transform: translateY(0);
 }
 `
-const FooterEscolhaAssento=styled.footer`
+const FooterEscolhaAssento = styled.footer`
 width: 375px;
 height: 117px;
 margin-top: 30px;
@@ -309,7 +362,7 @@ box-shadow: 0px -1px 1px #9EADBA;
         line-height: 30.50px;
     }
 `
-const FooterMovieSelecionado=styled.div`
+const FooterMovieSelecionado = styled.div`
 background-color: #FFFFFF;
 width: 64px;
 height: 89px;

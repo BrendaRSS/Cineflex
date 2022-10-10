@@ -63,6 +63,9 @@ const Sessoes = styled.div`
 width: 100%;
 height: auto;
 margin-top: 35px;
+    a{
+        text-decoration: none;
+    }
     p{
         display: block;
         margin-left: 10px;
