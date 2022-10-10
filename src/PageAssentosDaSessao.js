@@ -1,14 +1,13 @@
 import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 export default function PageAssentosDaSessao({
     setNameFilm,
     setDataSessao,
     setHoraSessao,
-    lugaresEscolhidos,
     setLugaresEscolhidos,
     cpf,
     setCpf,
@@ -87,6 +86,7 @@ export default function PageAssentosDaSessao({
             <Assentos>
                 {sessao.seats.map((a, index) =>
                     <BotaoAssento
+                        data-identifier="seat"
                         key={index}
                         isAvailable={a.isAvailable}
                         corAssento={(cadeirasEscolhidas.includes(a.id) === true ? "#1AAE9E" : "#C3CFD9")}
@@ -97,15 +97,15 @@ export default function PageAssentosDaSessao({
             </Assentos>
             <EstadoDoAssento>
                 <div>
-                    <CorBotao color="#1AAE9E" borda="#0E7D71" />
+                    <CorBotao data-identifier="seat-selected-subtitle" color="#1AAE9E" borda="#0E7D71" />
                     <p>Selecionado</p>
                 </div>
                 <div>
-                    <CorBotao color="#C3CFD9" borda="#7B8B99" />
+                    <CorBotao data-identifier="seat-available-subtitle" color="#C3CFD9" borda="#7B8B99" />
                     <p>Disponível</p>
                 </div>
                 <div>
-                    <CorBotao color="#FBE192" borda="#F7C52B" />
+                    <CorBotao data-identifier="seat-unavailable-subtitle" color="#FBE192" borda="#F7C52B" />
                     <p>Indisponível</p>
                 </div>
             </EstadoDoAssento>
@@ -115,6 +115,7 @@ export default function PageAssentosDaSessao({
                         <NomeComprador>
                             <label>Nome do comprador</label>
                             <input
+                                data-identifier="buyer-name-input"
                                 onChange={e => setName(e.target.value)}
                                 value={name}
                                 placeholder="Digite seu nome"
@@ -123,6 +124,7 @@ export default function PageAssentosDaSessao({
                         <CPFcomprador>
                             <label>CPF do comprador</label>
                             <input
+                                data-identifier="buyer-cpf-input"
                                 onChange={e => setCpf(e.target.value)}
                                 value={cpf}
                                 placeholder="Digite seu CPF"
@@ -132,15 +134,16 @@ export default function PageAssentosDaSessao({
                 </ContainerDadosDoComprador>
                 <DisplayFlex>
                     <BotaoReservarAssento
+                        data-identifier="reservation-btn"
                         type="submit">
                         Reservar assento(s)
                     </BotaoReservarAssento>
                 </DisplayFlex>
             </form>
             <FooterEscolhaAssento>
-                <FooterMovieSelecionado>
+                <FooterMovieSelecionado data-identifier="movie-img-preview">
                     <img alt="Capa do filme" src={sessao.movie.posterURL} />
-                </FooterMovieSelecionado><p>{sessao.movie.title}<br />{sessao.day.weekday} - {sessao.name}</p>
+                </FooterMovieSelecionado><p data-identifier="movie-and-session-infos-preview">{sessao.movie.title}<br />{sessao.day.weekday} - {sessao.name}</p>
             </FooterEscolhaAssento>
         </ContainerAssentosSessao>
     )

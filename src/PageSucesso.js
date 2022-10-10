@@ -1,7 +1,5 @@
-import styled from "styled-components";
-import axios from "axios";
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 
 export default function PageSucesso({nameFilm, dataSessao, horaSessao, lugaresEscolhidos, cpf, name}){
     console.log(cpf)
@@ -18,23 +16,23 @@ export default function PageSucesso({nameFilm, dataSessao, horaSessao, lugaresEs
                 Pedido feito <br/>
                 com sucesso!
             </SubtitleSucesso>
-            <EscolhasFeitas>
+            <EscolhasFeitas data-identifier="movie-session-infos-reserve-finished">
                 <p>Filme e Sessão</p><br/>
                 <span>{nameFilm}</span><br/>
                 <span>{dataSessao} {horaSessao}</span>
             </EscolhasFeitas>
-            <EscolhasFeitas>
+            <EscolhasFeitas data-identifier="seat-infos-reserve-finished">
                 <p>Ingressos</p><br/>
                 {lugaresEscolhidos.map((assento, index)=>
                    <span key={index}>Assento {assento}<br/> </span>)}
             </EscolhasFeitas>
-            <EscolhasFeitas>
+            <EscolhasFeitas data-identifier="buyer-infos-reserve-finished">
                 <p>Comprador</p><br/>
                 <span>Nome: {name}</span><br/>
                 <span>CPF: {cpf}</span>
             </EscolhasFeitas>
-            <Link to="/">
-                <BotaoBackHome>Voltar pra Home</BotaoBackHome>
+            <Link to={"/"}>
+                <BotaoBackHome data-identifier="back-to-home-btn"> Voltar pra Home</BotaoBackHome>
             </Link>
         </ContainerSucesso>
         </>
@@ -49,6 +47,9 @@ const ContainerSucesso=styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    a{
+        text-decoration: none;
+    }
 `
 const SubtitleSucesso=styled.div`
     box-sizing: border-box;

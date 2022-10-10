@@ -29,13 +29,13 @@ export default function PageEscolhaDaSessao() {
                 Selecione o horário
             </SubtitleEscolhaSessao>
             {sessoes.days.map((d, index) =>
-                <Sessoes key={index}>
+                <Sessoes key={index} data-identifier="session-date">
                     <p>{d.weekday} - {d.date}</p>
-                    {d.showtimes.map((h, index) => <Link key={index} to={`/assentos/${h.id}`}><button>{h.name}</button></Link>)}
+                    {d.showtimes.map((h, index) => <Link key={index} to={`/assentos/${h.id}`}><button data-identifier="hour-minute-btn">{h.name}</button></Link>)}
                 </Sessoes>
             )}
             <FooterEscolhaSessao>
-                <FooterMovie><img alt="Capa do filme" src={sessoes.posterURL} /></FooterMovie><p>{sessoes.title}</p>
+                <FooterMovie data-identifier="movie-img-preview"><img alt="Capa do filme" src={sessoes.posterURL} /></FooterMovie><p data-identifier="movie-and-session-infos-preview">{sessoes.title}</p>
             </FooterEscolhaSessao>
         </ContainerEscolhaSessao>
     )

@@ -31,7 +31,7 @@ export default function PageEscolhaDeFilme(){
             <MovieScreen>
                {filmes.map((f, index)=> 
                <Link key={index} to={`/sessoes/${f.id}`}>
-                    <Movie>
+                    <Movie data-identifier="movie-outdoor">
                         <img alt="capa do filme" src={f.posterURL}/>
                     </Movie>
                 </Link>)}   

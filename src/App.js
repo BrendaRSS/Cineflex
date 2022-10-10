@@ -28,13 +28,9 @@ export default function App() {
                     <Route 
                         path="/assentos/:idSessao" 
                         element={<PageAssentosDaSessao
-                                        nameFilm={nameFilm}
                                         setNameFilm={setNameFilm}
-                                        dataSessao={dataSessao}
                                         setDataSessao={setDataSessao} 
-                                        horaSessao={horaSessao} 
                                         setHoraSessao={setHoraSessao}
-                                        lugaresEscolhidos={lugaresEscolhidos}
                                         setLugaresEscolhidos={setLugaresEscolhidos}
                                         cpf={cpf} 
                                         setCpf={setCpf}
