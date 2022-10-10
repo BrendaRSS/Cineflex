@@ -17,9 +17,11 @@ export default function PageAssentosDaSessao({
 
     const[sessao, setSessao]=useState(undefined)
     const[cadeirasEscolhidas, setCadeirasEscolhidas]=useState([])
+    const[nameAssentos, setNameAssentos]=useState([])
     const navigate = useNavigate()
     const {idSessao} = useParams()
     console.log(cadeirasEscolhidas)
+    console.log(nameAssentos)
 
     useEffect(()=>{
         const promisse=axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${idSessao}/seats`)
@@ -42,10 +44,14 @@ export default function PageAssentosDaSessao({
             && assentoEscolhido.isAvailable===true){
             let newArray=[...cadeirasEscolhidas, assentoEscolhido.id]
             setCadeirasEscolhidas(newArray)
+            let arrayNameAssentos=[...nameAssentos, assentoEscolhido.name]
+            setNameAssentos(arrayNameAssentos)
         }else if(cadeirasEscolhidas.includes(assentoEscolhido.id)===true
                     && assentoEscolhido.isAvailable===true){
             let newArray= cadeirasEscolhidas.filter((i)=> i!==assentoEscolhido.id)
             setCadeirasEscolhidas(newArray)
+            let arrayNameAssentos=nameAssentos.filter((n)=>n!==assentoEscolhido.name)
+            setNameAssentos(arrayNameAssentos)
         } else{
             alert("Esse assento está indisponível")
         }
@@ -64,7 +70,7 @@ export default function PageAssentosDaSessao({
             setNameFilm(sessao.movie.title)
             setDataSessao(sessao.day.date)
             setHoraSessao(sessao.name)
-            setLugaresEscolhidos([15,16,17])
+            setLugaresEscolhidos(nameAssentos)
             navigate("/sucesso")
         })
 
