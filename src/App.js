@@ -43,7 +43,7 @@ export default function App() {
                                         dataSessao={dataSessao}
                                         horaSessao={horaSessao} 
                                         lugaresEscolhidos={lugaresEscolhidos}
-                                        cpf={cpf} 
+                                        cpf={cpf}
                                         name={name}/>}/>
                 </Routes>
             </ScreenContainer>

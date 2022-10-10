@@ -6,7 +6,6 @@ import { Link, useParams } from "react-router-dom";
 export default function PageEscolhaDaSessao() {
     const [sessoes, setSessoes] = useState(undefined)
     const { idFilme } = useParams()
-    console.log(idFilme)
 
     useEffect(() => {
         const promisse = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/movies/${idFilme}/showtimes`)

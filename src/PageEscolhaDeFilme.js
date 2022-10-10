@@ -10,7 +10,6 @@ export default function PageEscolhaDeFilme(){
     useEffect(()=> {
         const promisse= axios.get("https://mock-api.driven.com.br/api/v5/cineflex/movies")
         promisse.then((resposta)=>{
-            console.log(resposta.data);
             setFilmes(resposta.data)
         })
 

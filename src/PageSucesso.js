@@ -2,13 +2,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export default function PageSucesso({nameFilm, dataSessao, horaSessao, lugaresEscolhidos, cpf, name}){
-    console.log(cpf)
-    console.log(name)
-    console.log(nameFilm)
-    console.log(dataSessao)
-    console.log(horaSessao)
-    console.log(lugaresEscolhidos)
-
+    
     return(
         <>
         <ContainerSucesso>

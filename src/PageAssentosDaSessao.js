@@ -19,8 +19,6 @@ export default function PageAssentosDaSessao({
     const [nameAssentos, setNameAssentos] = useState([])
     const navigate = useNavigate()
     const { idSessao } = useParams()
-    console.log(cadeirasEscolhidas)
-    console.log(nameAssentos)
 
     useEffect(() => {
         const promisse = axios.get(`https://mock-api.driven.com.br/api/v5/cineflex/showtimes/${idSessao}/seats`)
@@ -38,7 +36,6 @@ export default function PageAssentosDaSessao({
     }
 
     function reservarAssento(assentoEscolhido) {
-        console.log(assentoEscolhido)
         if (cadeirasEscolhidas.includes(assentoEscolhido.id) === false
             && assentoEscolhido.isAvailable === true) {
             let newArray = [...cadeirasEscolhidas, assentoEscolhido.id]
