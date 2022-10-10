@@ -2,10 +2,22 @@ import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-export default function PageAssentosDaSessao(){
+export default function PageAssentosDaSessao({
+    setNameFilm,
+    setDataSessao,
+    setHoraSessao,
+    lugaresEscolhidos,
+    setLugaresEscolhidos, 
+    cpf, 
+    setCpf, 
+    name, 
+    setName}){
+
     const[sessao, setSessao]=useState(undefined)
     const[cadeirasEscolhidas, setCadeirasEscolhidas]=useState([])
+    const navigate = useNavigate()
     const {idSessao} = useParams()
     console.log(cadeirasEscolhidas)
 
@@ -16,7 +28,7 @@ export default function PageAssentosDaSessao(){
         })
         
         promisse.catch((erro)=>{
-            console.log(erro.response.data)
+            alert(erro.response.data)
         })
     },[idSessao])
 
@@ -24,12 +36,41 @@ export default function PageAssentosDaSessao(){
         return <div>Carregando...</div>
     }
     
-    function reservarAssento(idAcentoEscolhido){
-        console.log(idAcentoEscolhido)
-        if(idAcentoEscolhido.isAvailable===true){
-            let newArray=[...cadeirasEscolhidas, idAcentoEscolhido.id]
+    function reservarAssento(assentoEscolhido){
+        console.log(assentoEscolhido)
+        if(cadeirasEscolhidas.includes(assentoEscolhido.id)===false
+            && assentoEscolhido.isAvailable===true){
+            let newArray=[...cadeirasEscolhidas, assentoEscolhido.id]
             setCadeirasEscolhidas(newArray)
+        }else if(cadeirasEscolhidas.includes(assentoEscolhido.id)===true
+                    && assentoEscolhido.isAvailable===true){
+            let newArray= cadeirasEscolhidas.filter((i)=> i!==assentoEscolhido.id)
+            setCadeirasEscolhidas(newArray)
+        } else{
+            alert("Esse assento está indisponível")
         }
+    }
+
+    function enviarDados(event){
+        event.preventDefault()
+        const body= {
+            ids: cadeirasEscolhidas ,
+            name ,
+            cpf 
+        }
+
+        const promise = axios.post("https://mock-api.driven.com.br/api/v5/cineflex/seats/book-many", body)
+        promise.then(()=>{
+            setNameFilm(sessao.movie.title)
+            setDataSessao(sessao.day.date)
+            setHoraSessao(sessao.name)
+            setLugaresEscolhidos([15,16,17])
+            navigate("/sucesso")
+        })
+
+        promise.catch((erro)=>{
+            console.log(erro.response.data)
+        })
     }
 
     return(
@@ -62,19 +103,30 @@ export default function PageAssentosDaSessao(){
                     <p>Indisponível</p>
                 </div>
             </EstadoDoAssento>
-            <DadosDoComprador>
-                <NomeComprador>
-                    <label>Nome do comprador</label>
-                    <input placeholder="Digite seu nome"/>
-                </NomeComprador>
-                <CPFcomprador>
-                    <label>CPF do comprador</label>
-                    <input placeholder="Digite seu CPF"/>
-                </CPFcomprador>
-            </DadosDoComprador>
-            <Link to="/sucesso">
-                <BotaoReservarAssento>Reservar assento(s)</BotaoReservarAssento>
-            </Link>
+            <form onSubmit={enviarDados}>
+                <DadosDoComprador>
+                    <NomeComprador>
+                        <label>Nome do comprador</label>
+                        <input 
+                            onChange={e=>setName(e.target.value)}
+                            value={name}
+                            placeholder="Digite seu nome" 
+                            required/>
+                    </NomeComprador>
+                    <CPFcomprador>
+                        <label>CPF do comprador</label>
+                        <input 
+                            onChange={e=>setCpf(e.target.value)}
+                            value={cpf}
+                            placeholder="Digite seu CPF" 
+                            required/>
+                    </CPFcomprador>
+                </DadosDoComprador>
+                <BotaoReservarAssento 
+                    type="submit">
+                        Reservar assento(s)
+                </BotaoReservarAssento>
+            </form>
             <FooterEscolhaAssento>
                 <FooterMovieSelecionado>
                     <img alt="Capa do filme" src={sessao.movie.posterURL}/>

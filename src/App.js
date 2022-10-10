@@ -1,5 +1,6 @@
 import GlobalStyle from "./GlobalStyle";
 import styled from "styled-components";
+import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import CineflexHeadrer from "./CineflexHeader";
 import PageEscolhaDeFilme from "./PageEscolhaDeFilme";
@@ -9,6 +10,13 @@ import PageSucesso from "./PageSucesso"
 
 
 export default function App() {
+    const[nameFilm, setNameFilm]=useState("")
+    const[dataSessao, setDataSessao]=useState("")
+    const[horaSessao, setHoraSessao]=useState("")
+    const[lugaresEscolhidos, setLugaresEscolhidos]=useState([])
+    const[cpf, setCpf]=useState("")
+    const[name, setName]=useState("")
+
     return (
         <BrowserRouter>
             <ScreenContainer>
@@ -17,8 +25,30 @@ export default function App() {
                 <Routes>
                     <Route path="/" element={<PageEscolhaDeFilme />}/>
                     <Route path="/sessoes/:idFilme" element={<PageEscolhaDaSessao/>}/>
-                    <Route path="/assentos/:idSessao" element={<PageAssentosDaSessao/>}/>
-                    <Route path="/sucesso" element={<PageSucesso/>}/>
+                    <Route 
+                        path="/assentos/:idSessao" 
+                        element={<PageAssentosDaSessao
+                                        nameFilm={nameFilm}
+                                        setNameFilm={setNameFilm}
+                                        dataSessao={dataSessao}
+                                        setDataSessao={setDataSessao} 
+                                        horaSessao={horaSessao} 
+                                        setHoraSessao={setHoraSessao}
+                                        lugaresEscolhidos={lugaresEscolhidos}
+                                        setLugaresEscolhidos={setLugaresEscolhidos}
+                                        cpf={cpf} 
+                                        setCpf={setCpf}
+                                        name={name}
+                                        setName={setName}/>}/>
+                    <Route 
+                        path="/sucesso" 
+                        element={<PageSucesso
+                                        nameFilm={nameFilm}
+                                        dataSessao={dataSessao}
+                                        horaSessao={horaSessao} 
+                                        lugaresEscolhidos={lugaresEscolhidos}
+                                        cpf={cpf} 
+                                        name={name}/>}/>
                 </Routes>
             </ScreenContainer>
         </BrowserRouter >

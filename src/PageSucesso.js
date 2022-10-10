@@ -3,7 +3,14 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-export default function PageSucesso(){
+export default function PageSucesso({nameFilm, dataSessao, horaSessao, lugaresEscolhidos, cpf, name}){
+    console.log(cpf)
+    console.log(name)
+    console.log(nameFilm)
+    console.log(dataSessao)
+    console.log(horaSessao)
+    console.log(lugaresEscolhidos)
+
     return(
         <>
         <ContainerSucesso>
@@ -13,18 +20,18 @@ export default function PageSucesso(){
             </SubtitleSucesso>
             <EscolhasFeitas>
                 <p>Filme e Sessão</p><br/>
-                <span>Enola Holmes</span><br/>
-                <span>24/06/2021 15:00</span>
+                <span>{nameFilm}</span><br/>
+                <span>{dataSessao} {horaSessao}</span>
             </EscolhasFeitas>
             <EscolhasFeitas>
                 <p>Ingressos</p><br/>
-                <span>Assento 15</span><br/>
-                <span>Assento 16</span>
+                {lugaresEscolhidos.map((assento, index)=>
+                   <span key={index}>Assento {assento}<br/> </span>)}
             </EscolhasFeitas>
             <EscolhasFeitas>
                 <p>Comprador</p><br/>
-                <span>Nome: Brenda Rayane de Souza e Silva</span><br/>
-                <span>CPF: 111.111.111-11</span>
+                <span>Nome: {name}</span><br/>
+                <span>CPF: {cpf}</span>
             </EscolhasFeitas>
             <Link to="/">
                 <BotaoBackHome>Voltar pra Home</BotaoBackHome>
