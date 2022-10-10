@@ -1,7 +1,23 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
-export default function PageSucesso({nameFilm, dataSessao, horaSessao, lugaresEscolhidos, cpf, name}){
+export default function PageSucesso({nameFilm, dataSessao, horaSessao, lugaresEscolhidos, cpf, name,  setCpf,
+    setName}){
+    const navigate = useNavigate()
+
+    function resetOrder(event){
+        event.preventDefault()
+        console.log(cpf)
+        console.log(name)
+        console.log(nameFilm)
+        console.log(dataSessao)
+        console.log(horaSessao)
+        console.log(lugaresEscolhidos)
+        setCpf("")
+        setName("")
+        navigate("/")
+    }
     
     return(
         <>
@@ -25,9 +41,9 @@ export default function PageSucesso({nameFilm, dataSessao, horaSessao, lugaresEs
                 <span>Nome: {name}</span><br/>
                 <span>CPF: {cpf}</span>
             </EscolhasFeitas>
-            <Link to={"/"}>
-                <BotaoBackHome data-identifier="back-to-home-btn"> Voltar pra Home</BotaoBackHome>
-            </Link>
+            <form onSubmit={resetOrder}>
+                <BotaoBackHome type="submit" data-identifier="back-to-home-btn"> Voltar pra Home</BotaoBackHome>
+            </form>
         </ContainerSucesso>
         </>
     )

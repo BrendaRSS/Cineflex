@@ -44,7 +44,9 @@ export default function App() {
                                         horaSessao={horaSessao} 
                                         lugaresEscolhidos={lugaresEscolhidos}
                                         cpf={cpf}
-                                        name={name}/>}/>
+                                        name={name}
+                                        setCpf={setCpf}
+                                        setName={setName}/>}/>
                 </Routes>
             </ScreenContainer>
         </BrowserRouter >
